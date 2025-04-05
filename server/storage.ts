@@ -1,4 +1,4 @@
-import { db } from "./db";
+import { db, pool } from "./db";
 import { 
   users, User, InsertUser, 
   complianceTasks, ComplianceTask, InsertComplianceTask,
@@ -9,7 +9,7 @@ import {
   messageTemplates, MessageTemplate, InsertMessageTemplate
 } from "@shared/schema";
 import { eq, and, or, gte, lte, desc, asc, sql as sqlQuery } from "drizzle-orm";
-import session from "express-session";
+import session, { Store } from "express-session";
 import connectPg from "connect-pg-simple";
 
 const PostgresSessionStore = connectPg(session);
@@ -71,17 +71,15 @@ export interface IStorage {
   }>;
   
   // Session store
-  sessionStore: session.SessionStore;
+  sessionStore: Store;
 }
 
 export class DatabaseStorage implements IStorage {
-  sessionStore: session.SessionStore;
+  sessionStore: Store;
 
   constructor() {
     this.sessionStore = new PostgresSessionStore({
-      conObject: {
-        connectionString: process.env.DATABASE_URL,
-      },
+      pool,
       createTableIfMissing: true,
     });
   }
