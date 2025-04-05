@@ -1,0 +1,74 @@
+Create a modern and user-friendly Notifications & Alerts – Automated Reminders for Due Dates and Compliance Tasks in a statutory compliance management system.
+
+Technology Stack should be:
+
+react, Node, Postgress Database
+
+it should integrate with Postgress Database. Generate Sample Data in the Database schema which should be seen and manage from front-end.
+it should have database role based access for the users
+
+Feature Specification: Notifications & Alerts
+
+1. Overview
+
+The Notifications & Alerts module automates reminders for statutory due dates, payments, and compliance tasks. It ensures timely action by sending notifications through multiple channels.
+
+2. Core Functionalities
+
+2.1. Alert Types
+
+Statutory Compliance Alerts: Reminders for tax filings (GST, TDS, EPF, ESI), labor law compliances, and regulatory reports.
+
+Payment Alerts: Reminders for salary payments, vendor payments, and government fees.
+
+Task-Based Alerts: Notifications for deadlines related to contracts, renewals, and document submissions.
+
+Escalation Alerts: Alerts for pending or overdue compliance tasks.
+
+
+2.2. Notification Channels
+
+Email Alerts
+
+SMS Alerts
+
+Push Notifications (Mobile & Web App)
+
+WhatsApp / Telegram Alerts (Optional based on integration)
+
+Dashboard Reminders (Displayed within the application UI)
+
+
+2.3. Customization & Scheduling
+
+Users can configure alert frequency (daily, weekly, monthly, one-time).
+
+Option to set reminders X days before the due date.
+
+Custom alert messages with dynamic placeholders (e.g., [Due Date], [Payment Amount]).
+
+
+2.4. User Roles & Access Control
+
+Admins can configure notifications for all users.
+
+Individual users can enable/disable specific alerts.
+
+Escalation matrix: If the primary responsible person doesn’t act, the alert is escalated to a senior manager.
+
+
+2.5. Logging & History
+
+Maintain logs of all sent notifications.
+
+View status (Sent, Delivered, Read, Action Taken).
+
+Audit trail for compliance tracking.
+
+
+
+3. Example Scenarios
+
+✅ EPF Payment Reminder: “EPF Payment is due on March 31st. Please process the payment to avoid penalties.”
+✅ Income Tax Filing Alert: “Reminder: Corporate Income Tax filing deadline is April 15th.”
+✅ Overdue Alert Escalation: “Your TDS payment was due on March 20th. Escalating to Senior Manager.”
