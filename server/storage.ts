@@ -396,9 +396,10 @@ export class DatabaseStorage implements IStorage {
     overdue: number;
     completed: number;
   }> {
-    const currentDate = new Date();
+    const currentDate = new Date().toISOString();
     const futureDate = new Date();
-    futureDate.setDate(currentDate.getDate() + 7); // Tasks due in next 7 days
+    futureDate.setDate(futureDate.getDate() + 7); // Tasks due in next 7 days
+    const futureDateStr = futureDate.toISOString();
     
     let userFilter = '';
     if (userId) {
@@ -409,7 +410,7 @@ export class DatabaseStorage implements IStorage {
       SELECT
         COUNT(*) AS total,
         SUM(CASE 
-          WHEN "due_date" > ${currentDate} AND "due_date" <= ${futureDate} AND "status" = 'pending' 
+          WHEN "due_date" > ${currentDate} AND "due_date" <= ${futureDateStr} AND "status" = 'pending' 
           THEN 1 ELSE 0 
         END) AS due_soon,
         SUM(CASE 
