@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Menu,
+  User,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -92,52 +93,48 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
         {/* Navigation links */}
         <nav className="py-4">
           <div className="space-y-1 px-2">
-            <Link href="/">
-              <a
-                className={cn(
-                  "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                  isActive("/") && "bg-primary bg-opacity-10 text-primary border-l-2 border-primary"
-                )}
-              >
-                <LayoutDashboard className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
-                {!collapsed && <span>Dashboard</span>}
-              </a>
+            <Link 
+              href="/"
+              className={cn(
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                isActive("/") && "bg-primary/10 text-primary border-l-2 border-primary"
+              )}
+            >
+              <LayoutDashboard className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+              {!collapsed && <span>Dashboard</span>}
             </Link>
 
-            <Link href="/notifications">
-              <a
-                className={cn(
-                  "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                  isActive("/notifications") && "bg-primary bg-opacity-10 text-primary border-l-2 border-primary"
-                )}
-              >
-                <Bell className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
-                {!collapsed && <span>Notifications</span>}
-              </a>
+            <Link 
+              href="/notifications"
+              className={cn(
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                isActive("/notifications") && "bg-primary/10 text-primary border-l-2 border-primary"
+              )}
+            >
+              <Bell className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+              {!collapsed && <span>Notifications</span>}
             </Link>
 
-            <Link href="/settings">
-              <a
-                className={cn(
-                  "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                  isActive("/settings") && "bg-primary bg-opacity-10 text-primary border-l-2 border-primary"
-                )}
-              >
-                <Settings className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
-                {!collapsed && <span>Settings</span>}
-              </a>
+            <Link 
+              href="/settings"
+              className={cn(
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                isActive("/settings") && "bg-primary/10 text-primary border-l-2 border-primary"
+              )}
+            >
+              <Settings className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+              {!collapsed && <span>Settings</span>}
             </Link>
 
-            <Link href="/profile">
-              <a
-                className={cn(
-                  "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                  isActive("/profile") && "bg-primary bg-opacity-10 text-primary border-l-2 border-primary"
-                )}
-              >
-                <User className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
-                {!collapsed && <span>Profile</span>}
-              </a>
+            <Link 
+              href="/profile"
+              className={cn(
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                isActive("/profile") && "bg-primary/10 text-primary border-l-2 border-primary"
+              )}
+            >
+              <User className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+              {!collapsed && <span>Profile</span>}
             </Link>
           </div>
         </nav>

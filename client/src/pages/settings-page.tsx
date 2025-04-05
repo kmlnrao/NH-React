@@ -1,3 +1,4 @@
+import React from "react";
 import { Loader2, Save } from "lucide-react";
 import { Layout } from "@/components/layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,12 +42,24 @@ export default function SettingsPage() {
   const notificationSettingsForm = useForm<NotificationSettingsFormValues>({
     resolver: zodResolver(notificationSettingsSchema),
     defaultValues: {
-      emailEnabled: settings?.emailEnabled || true,
-      pushEnabled: settings?.pushEnabled || true,
-      smsEnabled: settings?.smsEnabled || false,
-      emailFrequency: settings?.emailFrequency || "immediate",
+      emailEnabled: true,
+      pushEnabled: true,
+      smsEnabled: false,
+      emailFrequency: "immediate",
     },
   });
+  
+  // Update form when settings are loaded
+  React.useEffect(() => {
+    if (settings) {
+      notificationSettingsForm.reset({
+        emailEnabled: settings.emailEnabled ?? true,
+        pushEnabled: settings.pushEnabled ?? true,
+        smsEnabled: settings.smsEnabled ?? false,
+        emailFrequency: (settings.emailFrequency as "immediate" | "daily" | "weekly") ?? "immediate",
+      });
+    }
+  }, [settings, notificationSettingsForm]);
 
   // Update notification settings mutation
   const updateSettingsMutation = useMutation({
