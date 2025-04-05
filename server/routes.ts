@@ -1,7 +1,7 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth } from "./auth";
+import { setupAuth, comparePasswords, hashPassword } from "./auth";
 import { setupTaskScheduler } from "./tasks";
 import { generateSampleData } from "./sample-data";
 import {
@@ -436,6 +436,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // User profile update endpoint
+  app.patch("/api/users/:id", isAuthenticated, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      
+      // Users can only update their own profile unless they're an admin
+      if (userId !== req.user?.id && req.user?.role !== "admin") {
+        return res.status(403).json({ message: "You don't have permission to update this profile" });
+      }
+      
+      const updatedUser = await storage.updateUser(userId, req.body);
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating user:", error);
+      res.status(500).json({ message: "Failed to update user profile" });
+    }
+  });
+  
+  // Change password endpoint
+  app.post("/api/users/change-password", isAuthenticated, async (req, res) => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      
+      // Verify current password
+      const user = await storage.getUser(req.user!.id);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      const isPasswordValid = await comparePasswords(currentPassword, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Current password is incorrect" });
+      }
+      
+      // Update password
+      if (newPassword) {
+        const hashedPassword = await hashPassword(newPassword);
+        await storage.updateUser(user.id, { password: hashedPassword });
+      }
+      
+      res.json({ message: "Password updated successfully" });
+    } catch (error) {
+      console.error("Error changing password:", error);
+      res.status(500).json({ message: "Failed to change password" });
+    }
+  });
+  
+  // Settings endpoints
+  app.get("/api/settings", isAuthenticated, async (req, res) => {
+    try {
+      const settings = await storage.getNotificationSettings(req.user!.id);
+      res.json(settings.length > 0 ? settings[0] : { userId: req.user!.id });
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+      res.status(500).json({ message: "Failed to fetch notification settings" });
+    }
+  });
+  
+  app.patch("/api/settings", isAuthenticated, async (req, res) => {
+    try {
+      const settings = await storage.getNotificationSettings(req.user!.id);
+      
+      let updatedSettings;
+      if (settings.length > 0) {
+        updatedSettings = await storage.updateNotificationSettings(settings[0].id, req.body);
+      } else {
+        updatedSettings = await storage.createNotificationSettings({
+          userId: req.user!.id,
+          ...req.body
+        });
+      }
+      
+      res.json(updatedSettings);
+    } catch (error) {
+      console.error("Error updating settings:", error);
+      res.status(500).json({ message: "Failed to update notification settings" });
+    }
+  });
+  
   // Sample data generation endpoint (only in development)
   app.post("/api/sample-data", async (req, res) => {
     try {

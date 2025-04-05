@@ -116,7 +116,29 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
               </a>
             </Link>
 
+            <Link href="/settings">
+              <a
+                className={cn(
+                  "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                  isActive("/settings") && "bg-primary bg-opacity-10 text-primary border-l-2 border-primary"
+                )}
+              >
+                <Settings className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+                {!collapsed && <span>Settings</span>}
+              </a>
+            </Link>
 
+            <Link href="/profile">
+              <a
+                className={cn(
+                  "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                  isActive("/profile") && "bg-primary bg-opacity-10 text-primary border-l-2 border-primary"
+                )}
+              >
+                <User className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+                {!collapsed && <span>Profile</span>}
+              </a>
+            </Link>
           </div>
         </nav>
 
