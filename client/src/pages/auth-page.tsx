@@ -9,8 +9,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Loader2, CheckCircle, LockKeyhole, Building, Mail, User, Calendar, Phone } from "lucide-react";
+import { Loader2, CheckCircle, LockKeyhole, Building, Mail, User, Calendar, Phone, Database } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -34,7 +36,9 @@ const registerSchema = z.object({
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("login");
   const [location, navigate] = useLocation();
+  const [generatingSampleData, setGeneratingSampleData] = useState(false);
   const { user, loginMutation, registerMutation, isLoading } = useAuth();
+  const { toast } = useToast();
 
   // Redirect if user is already logged in
   useEffect(() => {
@@ -70,7 +74,50 @@ export default function AuthPage() {
   };
 
   const onRegisterSubmit = (data: z.infer<typeof registerSchema>) => {
-    registerMutation.mutate(data);
+    // Ensure role is correctly typed
+    const roleValue = data.role as "user" | "admin" | "manager" | "team_lead" | undefined;
+    registerMutation.mutate({...data, role: roleValue});
+  };
+  
+  const generateSampleData = async () => {
+    if (generatingSampleData) return;
+    
+    try {
+      setGeneratingSampleData(true);
+      toast({
+        title: "Generating Sample Data",
+        description: "Please wait while we populate the database with sample data...",
+      });
+      
+      const response = await apiRequest("POST", "/api/sample-data", {});
+      
+      if (response.ok) {
+        const result = await response.json();
+        toast({
+          title: "Success!",
+          description: `Created ${result.users} users, ${result.tasks} tasks, and ${result.notifications} notifications.`,
+        });
+        
+        // Automatically fill in an admin login
+        loginForm.setValue("username", "admin1");
+        loginForm.setValue("password", "password123");
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to generate sample data. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred.",
+        variant: "destructive",
+      });
+      console.error("Sample data generation error:", error);
+    } finally {
+      setGeneratingSampleData(false);
+    }
   };
 
   return (
@@ -369,6 +416,33 @@ export default function AuthPage() {
                     </button>
                   </p>
                 )}
+              </div>
+              
+              {/* Sample Data Generator Button */}
+              <div className="pt-4 border-t border-gray-100">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-full flex items-center justify-center"
+                  onClick={generateSampleData}
+                  disabled={generatingSampleData}
+                >
+                  {generatingSampleData ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Generating Sample Data...
+                    </>
+                  ) : (
+                    <>
+                      <Database className="mr-2 h-4 w-4" />
+                      Generate Sample Data
+                    </>
+                  )}
+                </Button>
+                <p className="text-xs text-center text-gray-500 mt-2">
+                  Populate the database with sample users, tasks, and notifications for testing.
+                </p>
               </div>
             </CardFooter>
           </Card>

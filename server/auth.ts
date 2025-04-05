@@ -5,12 +5,25 @@ import session from "express-session";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
-import { User, InsertUser, insertUserSchema } from "@shared/schema";
+import { User as SchemaUser, InsertUser, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
 
+// Type declaration for Express session
 declare global {
   namespace Express {
-    interface User extends User {}
+    // Manually define properties we need from SchemaUser
+    interface User {
+      id: number;
+      username: string;
+      email: string;
+      fullName: string;
+      role: "admin" | "manager" | "team_lead" | "user";
+      department: string | null;
+      phone: string | null;
+      password: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }
   }
 }
 
@@ -54,7 +67,8 @@ export function setupAuth(app: Express) {
         if (!user || !(await comparePasswords(password, user.password))) {
           return done(null, false, { message: "Invalid username or password" });
         }
-        return done(null, user);
+        // Type cast to match Express.User interface
+        return done(null, user as any);
       } catch (error) {
         return done(error);
       }
@@ -65,7 +79,11 @@ export function setupAuth(app: Express) {
   passport.deserializeUser(async (id: number, done) => {
     try {
       const user = await storage.getUser(id);
-      done(null, user);
+      if (!user) {
+        return done(null, false);
+      }
+      // Type cast to match Express.User interface
+      done(null, user as any);
     } catch (error) {
       done(error);
     }
@@ -120,8 +138,8 @@ export function setupAuth(app: Express) {
         )
       );
 
-      // Login the user
-      req.login(user, (err) => {
+      // Login the user - type cast to match Express.User
+      req.login(user as any, (err) => {
         if (err) return next(err);
         
         // Remove password from response
@@ -140,14 +158,14 @@ export function setupAuth(app: Express) {
   });
 
   app.post("/api/login", (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
+    passport.authenticate("local", (err: any, user: SchemaUser | false, info: { message: string } | undefined) => {
       if (err) {
         return next(err);
       }
       if (!user) {
         return res.status(401).json({ message: info?.message || "Authentication failed" });
       }
-      req.login(user, (err) => {
+      req.login(user as any, (err) => {
         if (err) {
           return next(err);
         }

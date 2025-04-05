@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import { setupTaskScheduler } from "./tasks";
+import { generateSampleData } from "./sample-data";
 import {
   insertComplianceTaskSchema,
   insertNotificationSettingsSchema,
@@ -432,6 +433,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting message template:", error);
       res.status(500).json({ message: "Failed to delete message template" });
+    }
+  });
+
+  // Sample data generation endpoint (only in development)
+  app.post("/api/sample-data", async (req, res) => {
+    try {
+      // This endpoint is publicly accessible for development ease
+      // but should be removed or secured in production
+      const result = await generateSampleData();
+      res.json(result);
+    } catch (error) {
+      console.error("Error generating sample data:", error);
+      res.status(500).json({ message: "Failed to generate sample data" });
     }
   });
 

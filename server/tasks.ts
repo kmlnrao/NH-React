@@ -7,16 +7,34 @@ const CHECK_INTERVAL = 60 * 60 * 1000; // 1 hour in milliseconds
 // Function to process due tasks and create notifications
 async function processTasks() {
   try {
+    console.log("Running scheduled task processing...");
+    
     // Get tasks due soon (next 7 days) that need notifications
+    console.log("Checking for tasks due soon...");
     const dueSoonTasks = await storage.getTasksDueSoon(7);
+    console.log(`Found ${dueSoonTasks.length} tasks due soon`);
+    
     for (const task of dueSoonTasks) {
-      await createNotificationForTask(task, "upcoming");
+      try {
+        await createNotificationForTask(task, "upcoming");
+      } catch (taskError) {
+        console.error(`Error processing due soon task ${task.id}:`, taskError);
+        // Continue with next task
+      }
     }
 
     // Get overdue tasks that need escalation
+    console.log("Checking for overdue tasks...");
     const overdueTasks = await storage.getOverdueTasks();
+    console.log(`Found ${overdueTasks.length} overdue tasks`);
+    
     for (const task of overdueTasks) {
-      await createNotificationForTask(task, "overdue");
+      try {
+        await createNotificationForTask(task, "overdue");
+      } catch (taskError) {
+        console.error(`Error processing overdue task ${task.id}:`, taskError);
+        // Continue with next task
+      }
     }
 
     console.log(`Task scheduler ran: Processed ${dueSoonTasks.length} upcoming tasks and ${overdueTasks.length} overdue tasks`);
@@ -94,9 +112,9 @@ async function createNotificationForTask(task: ComplianceTask, status: "upcoming
     taskId: task.id,
     title,
     message,
-    type: task.type,
-    status: "pending",
-    priority,
+    type: task.type as any,
+    status: "pending" as any,
+    priority: priority as any,
     channels,
     scheduledAt: new Date(),
     escalationLevel: 0,
@@ -109,7 +127,7 @@ async function createNotificationForTask(task: ComplianceTask, status: "upcoming
   await storage.createNotificationLog({
     notificationId: notification.id,
     userId: task.assignedTo,
-    status: "sent",
+    status: "sent" as any,
     channel: "dashboard",
   });
 
@@ -145,10 +163,10 @@ async function handleEscalation(task: ComplianceTask, notification: Notification
       taskId: task.id,
       title: `ESCALATION: ${task.title}`,
       message: `Task "${task.title}" is ${daysOverdue} days overdue. This has been escalated to you as level ${escalationLevel.level} escalation contact.`,
-      type: "escalation",
-      status: "pending",
-      priority: "critical",
-      channels: [], // Will be populated based on escalation settings
+      type: "escalation" as any,
+      status: "pending" as any,
+      priority: "critical" as any,
+      channels: [] as string[], // Will be populated based on escalation settings
       scheduledAt: new Date(),
       escalationLevel: escalationLevel.level,
       escalatedTo: escalationLevel.userId,
@@ -170,7 +188,7 @@ async function handleEscalation(task: ComplianceTask, notification: Notification
     await storage.createNotificationLog({
       notificationId: escalationNotification.id,
       userId: escalationLevel.userId,
-      status: "sent",
+      status: "sent" as any,
       channel: "dashboard",
       metadata: {
         escalationLevel: escalationLevel.level,
@@ -191,13 +209,28 @@ let taskScheduler: NodeJS.Timeout | null = null;
 
 // Function to set up the task scheduler
 export function setupTaskScheduler() {
-  // Run immediately on startup
-  processTasks();
-  
-  // Then set up interval
+  // Set up interval for task processing, but don't run immediately to allow DB connection to be established
   if (!taskScheduler) {
-    taskScheduler = setInterval(processTasks, CHECK_INTERVAL);
-    console.log("Task scheduler initialized");
+    // Delay the first run by 10 seconds to allow database connections to establish
+    setTimeout(() => {
+      // Try to run the task processor
+      try {
+        processTasks();
+      } catch (error) {
+        console.error("Error in initial task processing:", error);
+      }
+      
+      // Then set up the recurring interval
+      taskScheduler = setInterval(() => {
+        try {
+          processTasks();
+        } catch (error) {
+          console.error("Error in scheduled task processing:", error);
+        }
+      }, CHECK_INTERVAL);
+      
+      console.log("Task scheduler initialized");
+    }, 10000); // 10 second delay
   }
 }
 
