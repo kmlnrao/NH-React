@@ -153,6 +153,9 @@ export default function AuthPage() {
                       </>
                     ) : "Login"}
                   </Button>
+                  <p className="text-xs text-center text-gray-500 mt-2">
+                    Sample Login: <span className="font-medium">admin1</span> / Password: <span className="font-medium">password123</span>
+                  </p>
                 </form>
               </Form>
             </CardContent>
