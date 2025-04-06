@@ -26,8 +26,8 @@ export function Layout({ children, title }: LayoutProps) {
         </main>
         <footer className="border-t py-3 px-4 text-center text-xs text-gray-500 bg-white">
           <div className="container mx-auto">
-            <p>&copy; {new Date().getFullYear()} - Suvarna Technosoft Pvt Ltd all rights reserved.</p>
-            <p>&#8902; All Images and Logos are Copyright of Respective Owners.</p>
+            <p>&copy; {new Date().getFullYear()} Suvarna. All rights reserved.</p>
+            <p>A product of <a href="https://suvarna.co.in" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Suvarna Group</a></p>
           </div>
         </footer>
       </div>

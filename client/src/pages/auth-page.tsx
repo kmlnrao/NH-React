@@ -199,6 +199,12 @@ export default function AuthPage() {
               </div>
             </CardFooter>
           </Card>
+          
+          {/* Suvarna Footer */}
+          <div className="w-full text-center mt-4 text-gray-500 text-xs">
+            <p>© {new Date().getFullYear()} Suvarna. All rights reserved.</p>
+            <p>A product of <a href="https://suvarna.co.in" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Suvarna Group</a></p>
+          </div>
         </div>
 
         {/* Hero Section */}
