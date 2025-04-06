@@ -14,6 +14,9 @@ import {
   ChevronRight,
   Menu,
   User,
+  CheckSquare,
+  AlertTriangle,
+  Mail,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -105,6 +108,17 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
             </Link>
 
             <Link 
+              href="/tasks"
+              className={cn(
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                isActive("/tasks") && "bg-primary/10 text-primary border-l-2 border-primary"
+              )}
+            >
+              <CheckSquare className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+              {!collapsed && <span>Tasks</span>}
+            </Link>
+
+            <Link 
               href="/notifications"
               className={cn(
                 "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
@@ -114,6 +128,41 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
               <Bell className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
               {!collapsed && <span>Notifications</span>}
             </Link>
+
+            {/* Admin-only section */}
+            {user?.role === 'admin' && (
+              <>
+                <div className="mt-6 mb-2 px-4 text-xs font-semibold text-gray-500 uppercase">
+                  {!collapsed && "Admin Settings"}
+                </div>
+
+                <Link 
+                  href="/escalation-management"
+                  className={cn(
+                    "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                    isActive("/escalation-management") && "bg-primary/10 text-primary border-l-2 border-primary"
+                  )}
+                >
+                  <AlertTriangle className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+                  {!collapsed && <span>Escalation Levels</span>}
+                </Link>
+
+                <Link 
+                  href="/notification-templates"
+                  className={cn(
+                    "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
+                    isActive("/notification-templates") && "bg-primary/10 text-primary border-l-2 border-primary"
+                  )}
+                >
+                  <Mail className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
+                  {!collapsed && <span>Message Templates</span>}
+                </Link>
+              </>
+            )}
+
+            <div className="mt-6 mb-2 px-4 text-xs font-semibold text-gray-500 uppercase">
+              {!collapsed && "User Settings"}
+            </div>
 
             <Link 
               href="/settings"

@@ -10,6 +10,9 @@ import DashboardPage from "@/pages/dashboard-page";
 import NotificationsPage from "@/pages/notifications-page";
 import SettingsPage from "@/pages/settings-page";
 import UserProfilePage from "@/pages/user-profile-page";
+import TasksPage from "@/pages/tasks-page";
+import EscalationManagementPage from "@/pages/escalation-management-page";
+import NotificationTemplatesPage from "@/pages/notification-templates-page";
 
 function Router() {
   return (
@@ -19,6 +22,9 @@ function Router() {
       <ProtectedRoute path="/notifications" component={NotificationsPage} />
       <ProtectedRoute path="/settings" component={SettingsPage} />
       <ProtectedRoute path="/profile" component={UserProfilePage} />
+      <ProtectedRoute path="/tasks" component={TasksPage} />
+      <ProtectedRoute path="/escalation-management" component={EscalationManagementPage} />
+      <ProtectedRoute path="/notification-templates" component={NotificationTemplatesPage} />
       <Route component={NotFound} />
     </Switch>
   );

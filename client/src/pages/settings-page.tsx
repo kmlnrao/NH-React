@@ -1,7 +1,7 @@
 import React from "react";
-import { Loader2, Save } from "lucide-react";
+import { Loader2, Save, AlertTriangle, Mail, CheckSquare, ArrowRight } from "lucide-react";
 import { Layout } from "@/components/layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,6 +17,7 @@ import { NotificationSettings } from "@shared/schema";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Link } from "wouter";
 
 // Schema for notification settings form
 const notificationSettingsSchema = z.object({
@@ -207,6 +208,92 @@ export default function SettingsPage() {
             </Form>
           </CardContent>
         </Card>
+
+        {/* Admin-only settings section */}
+        {user?.role === 'admin' && (
+          <>
+            <h2 className="text-2xl font-bold tracking-tight mt-8">Administrator Settings</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {/* Task Management Card */}
+              <Card className="overflow-hidden">
+                <CardHeader className="bg-primary/5">
+                  <CardTitle className="flex items-center gap-2">
+                    <CheckSquare className="h-5 w-5" />
+                    Task Management
+                  </CardTitle>
+                  <CardDescription>
+                    Create and manage compliance tasks for your organization
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <p className="text-sm text-muted-foreground">
+                    Create, edit and assign compliance tasks to team members.
+                    Configure priority levels and due dates.
+                  </p>
+                </CardContent>
+                <CardFooter className="bg-primary/5 flex justify-end">
+                  <Button variant="ghost" asChild>
+                    <Link href="/tasks" className="flex items-center">
+                      Go to Tasks <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              {/* Escalation Levels Card */}
+              <Card className="overflow-hidden">
+                <CardHeader className="bg-primary/5">
+                  <CardTitle className="flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5" />
+                    Escalation Levels
+                  </CardTitle>
+                  <CardDescription>
+                    Configure notification escalation hierarchy
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <p className="text-sm text-muted-foreground">
+                    Define escalation tiers for different notification types.
+                    Set up reminders before deadlines and configure who gets notified.
+                  </p>
+                </CardContent>
+                <CardFooter className="bg-primary/5 flex justify-end">
+                  <Button variant="ghost" asChild>
+                    <Link href="/escalation-management" className="flex items-center">
+                      Configure Escalations <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              {/* Message Templates Card */}
+              <Card className="overflow-hidden">
+                <CardHeader className="bg-primary/5">
+                  <CardTitle className="flex items-center gap-2">
+                    <Mail className="h-5 w-5" />
+                    Message Templates
+                  </CardTitle>
+                  <CardDescription>
+                    Create and customize notification templates
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <p className="text-sm text-muted-foreground">
+                    Design standardized message templates for different notification
+                    types and channels. Use placeholders for dynamic content.
+                  </p>
+                </CardContent>
+                <CardFooter className="bg-primary/5 flex justify-end">
+                  <Button variant="ghost" asChild>
+                    <Link href="/notification-templates" className="flex items-center">
+                      Manage Templates <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          </>
+        )}
       </div>
     </Layout>
   );
