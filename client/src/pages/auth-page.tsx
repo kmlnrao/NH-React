@@ -87,157 +87,159 @@ export default function AuthPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <div className="flex flex-col md:flex-row w-full">
-        {/* Auth Form Section */}
-        <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
-          <Card className="w-full max-w-md">
-            <CardHeader className="text-center space-y-1">
-              <div className="flex justify-center mb-4">
-                <img src={samartiLogo} alt="Samarti Logo" className="h-12" />
-              </div>
-              <CardTitle className="text-2xl font-bold text-primary">Compliance Hub</CardTitle>
-              <CardDescription>
-                Enter your credentials to access your account
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* Login Form */}
-              <Form {...loginForm}>
-                <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
-                  <FormField
-                    control={loginForm.control}
-                    name="username"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input 
-                              placeholder="Enter your username" 
-                              className="pl-10" 
-                              {...field} 
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={loginForm.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <LockKeyhole className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input 
-                              type="password" 
-                              placeholder="Enter your password" 
-                              className="pl-10" 
-                              {...field} 
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button 
-                    type="submit" 
-                    className="w-full"
-                    disabled={loginMutation.isPending}
+      <div className="flex flex-col w-full">
+        <div className="flex flex-col md:flex-row flex-1">
+          {/* Auth Form Section */}
+          <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
+            <Card className="w-full max-w-md">
+              <CardHeader className="text-center space-y-1">
+                <div className="flex justify-center mb-4">
+                  <img src={samartiLogo} alt="Samarti Logo" className="h-12" />
+                </div>
+                <CardTitle className="text-2xl font-bold text-primary">Compliance Hub</CardTitle>
+                <CardDescription>
+                  Enter your credentials to access your account
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Login Form */}
+                <Form {...loginForm}>
+                  <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
+                    <FormField
+                      control={loginForm.control}
+                      name="username"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Username</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                              <Input 
+                                placeholder="Enter your username" 
+                                className="pl-10" 
+                                {...field} 
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={loginForm.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <LockKeyhole className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                              <Input 
+                                type="password" 
+                                placeholder="Enter your password" 
+                                className="pl-10" 
+                                {...field} 
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button 
+                      type="submit" 
+                      className="w-full"
+                      disabled={loginMutation.isPending}
+                    >
+                      {loginMutation.isPending ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Logging in...
+                        </>
+                      ) : "Login"}
+                    </Button>
+                    <p className="text-xs text-center text-gray-500 mt-2">
+                      Sample Login: <span className="font-medium">admin1</span> / Password: <span className="font-medium">password123</span>
+                    </p>
+                  </form>
+                </Form>
+              </CardContent>
+              <CardFooter className="flex flex-col space-y-4">
+                <div className="text-sm text-center text-gray-500 mt-4">
+                  <p>
+                    New account registration is managed by administrators.
+                    Please contact your system administrator for access.
+                  </p>
+                </div>
+                
+                {/* Sample Data Generator Button */}
+                <div className="pt-4 border-t border-gray-100">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="w-full flex items-center justify-center"
+                    onClick={generateSampleData}
+                    disabled={generatingSampleData}
                   >
-                    {loginMutation.isPending ? (
+                    {generatingSampleData ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Logging in...
+                        Generating Sample Data...
                       </>
-                    ) : "Login"}
+                    ) : (
+                      <>
+                        <Database className="mr-2 h-4 w-4" />
+                        Generate Sample Data
+                      </>
+                    )}
                   </Button>
                   <p className="text-xs text-center text-gray-500 mt-2">
-                    Sample Login: <span className="font-medium">admin1</span> / Password: <span className="font-medium">password123</span>
+                    Populate the database with sample users, tasks, and notifications for testing.
                   </p>
-                </form>
-              </Form>
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <div className="text-sm text-center text-gray-500 mt-4">
-                <p>
-                  New account registration is managed by administrators.
-                  Please contact your system administrator for access.
-                </p>
-              </div>
-              
-              {/* Sample Data Generator Button */}
-              <div className="pt-4 border-t border-gray-100">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="w-full flex items-center justify-center"
-                  onClick={generateSampleData}
-                  disabled={generatingSampleData}
-                >
-                  {generatingSampleData ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Generating Sample Data...
-                    </>
-                  ) : (
-                    <>
-                      <Database className="mr-2 h-4 w-4" />
-                      Generate Sample Data
-                    </>
-                  )}
-                </Button>
-                <p className="text-xs text-center text-gray-500 mt-2">
-                  Populate the database with sample users, tasks, and notifications for testing.
-                </p>
-              </div>
-            </CardFooter>
-          </Card>
-          
-          {/* Suvarna Footer */}
-          <div className="w-full text-center mt-4 text-gray-500 text-xs">
-            <p>© {new Date().getFullYear()} Suvarna. All rights reserved.</p>
-            <p>A product of <a href="https://suvarna.co.in" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Suvarna Group</a></p>
+                </div>
+              </CardFooter>
+            </Card>
           </div>
-        </div>
 
-        {/* Hero Section */}
-        <div className="hidden md:flex md:w-1/2 bg-primary p-8 text-white flex-col justify-center">
-          <div className="max-w-md mx-auto space-y-6">
-            <h1 className="text-3xl font-bold mb-4">Compliance Notification System</h1>
-            <p className="text-lg opacity-90">
-              Streamline your compliance management with automated notifications, task tracking, and real-time alerts.
-            </p>
-            <div className="space-y-4 mt-8">
-              <div className="flex items-start space-x-2">
-                <CheckCircle className="h-6 w-6 text-green-300 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="font-medium">Automated Reminders</h3>
-                  <p className="opacity-80 text-sm">Never miss critical deadlines with our intelligent notification system.</p>
+          {/* Hero Section */}
+          <div className="hidden md:flex md:w-1/2 bg-primary p-8 text-white flex-col justify-center">
+            <div className="max-w-md mx-auto space-y-6">
+              <h1 className="text-3xl font-bold mb-4">Compliance Notification System</h1>
+              <p className="text-lg opacity-90">
+                Streamline your compliance management with automated notifications, task tracking, and real-time alerts.
+              </p>
+              <div className="space-y-4 mt-8">
+                <div className="flex items-start space-x-2">
+                  <CheckCircle className="h-6 w-6 text-green-300 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-medium">Automated Reminders</h3>
+                    <p className="opacity-80 text-sm">Never miss critical deadlines with our intelligent notification system.</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start space-x-2">
-                <CheckCircle className="h-6 w-6 text-green-300 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="font-medium">Multi-channel Notifications</h3>
-                  <p className="opacity-80 text-sm">Receive alerts through email, SMS, and dashboard notifications.</p>
+                <div className="flex items-start space-x-2">
+                  <CheckCircle className="h-6 w-6 text-green-300 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-medium">Multi-channel Notifications</h3>
+                    <p className="opacity-80 text-sm">Receive alerts through email, SMS, and dashboard notifications.</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start space-x-2">
-                <CheckCircle className="h-6 w-6 text-green-300 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="font-medium">Role-based Access Control</h3>
-                  <p className="opacity-80 text-sm">Customize access and notification settings for your entire team.</p>
+                <div className="flex items-start space-x-2">
+                  <CheckCircle className="h-6 w-6 text-green-300 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-medium">Role-based Access Control</h3>
+                    <p className="opacity-80 text-sm">Customize access and notification settings for your entire team.</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        
+        {/* Suvarna Footer */}
+        <div className="w-full text-center py-3 text-gray-500 text-xs bg-white border-t">
+          <p>© {new Date().getFullYear()} Suvarna. All rights reserved.</p>
+          <p>A product of <a href="https://suvarna.co.in" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Suvarna Group</a></p>
         </div>
       </div>
     </div>
