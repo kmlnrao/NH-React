@@ -12,6 +12,7 @@ import { Loader2, CheckCircle, LockKeyhole, User, Database } from "lucide-react"
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { useState } from "react";
+import suvarnaLogo from '../assets/suvarna_logo.png';
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -91,6 +92,9 @@ export default function AuthPage() {
         <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
           <Card className="w-full max-w-md">
             <CardHeader className="text-center space-y-1">
+              <div className="flex justify-center mb-4">
+                <img src={suvarnaLogo} alt="Suvarna Logo" className="h-12" />
+              </div>
               <CardTitle className="text-2xl font-bold text-primary">Compliance Hub</CardTitle>
               <CardDescription>
                 Enter your credentials to access your account

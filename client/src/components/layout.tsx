@@ -24,6 +24,12 @@ export function Layout({ children, title }: LayoutProps) {
         <main className="flex-1 overflow-y-auto p-4">
           {children}
         </main>
+        <footer className="border-t py-3 px-4 text-center text-xs text-gray-500 bg-white">
+          <div className="container mx-auto">
+            <p>&copy; {new Date().getFullYear()} - Suvarna Technosoft Pvt Ltd all rights reserved.</p>
+            <p>&#8902; All Images and Logos are Copyright of Respective Owners.</p>
+          </div>
+        </footer>
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ import {
 import { BellIcon, HelpCircle, Settings, LogOut, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
+import suvarnaLogo from '../assets/suvarna_logo.png';
 
 interface HeaderProps {
   onMobileMenuClick: () => void;
@@ -47,7 +48,10 @@ export function Header({ onMobileMenuClick, title = "Dashboard" }: HeaderProps) 
     <header className="bg-white h-16 flex items-center justify-between px-4 border-b shadow-sm sticky top-0 z-10">
       <div className="flex items-center">
         <MobileSidebarTrigger onClick={onMobileMenuClick} />
-        <h1 className="text-xl font-medium text-gray-800 ml-2">{title}</h1>
+        <div className="flex items-center">
+          <img src={suvarnaLogo} alt="Suvarna Logo" className="h-8 mr-3" />
+          <h1 className="text-xl font-medium text-gray-800">{title}</h1>
+        </div>
       </div>
       <div className="flex items-center space-x-4">
         <Button variant="ghost" size="icon" className="relative">
