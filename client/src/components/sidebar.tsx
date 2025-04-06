@@ -61,14 +61,14 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 h-full w-64 transform bg-white shadow-md transition-all duration-300 md:relative md:z-0",
+          "fixed inset-y-0 left-0 z-50 h-full w-64 transform bg-gradient-to-b from-blue-50 to-white shadow-md transition-all duration-300 md:relative md:z-0",
           collapsed && "w-16",
           !showSidebar && "-translate-x-full md:translate-x-0",
           className
         )}
       >
         {/* Logo and collapse button */}
-        <div className="flex h-16 items-center justify-between border-b px-4">
+        <div className="flex h-16 items-center justify-between border-b bg-primary/10 px-4">
           {!collapsed && (
             <span className="text-xl font-semibold text-primary">Compliance Hub</span>
           )}
@@ -99,8 +99,8 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
             <Link 
               href="/"
               className={cn(
-                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                isActive("/") && "bg-primary/10 text-primary border-l-2 border-primary"
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-md transition-colors",
+                isActive("/") && "bg-primary/10 text-primary font-medium border-l-2 border-primary"
               )}
             >
               <LayoutDashboard className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
@@ -110,8 +110,8 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
             <Link 
               href="/tasks"
               className={cn(
-                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                isActive("/tasks") && "bg-primary/10 text-primary border-l-2 border-primary"
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-md transition-colors",
+                isActive("/tasks") && "bg-primary/10 text-primary font-medium border-l-2 border-primary"
               )}
             >
               <CheckSquare className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
@@ -121,8 +121,8 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
             <Link 
               href="/notifications"
               className={cn(
-                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                isActive("/notifications") && "bg-primary/10 text-primary border-l-2 border-primary"
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-md transition-colors",
+                isActive("/notifications") && "bg-primary/10 text-primary font-medium border-l-2 border-primary"
               )}
             >
               <Bell className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
@@ -139,8 +139,8 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
                 <Link 
                   href="/escalation-management"
                   className={cn(
-                    "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                    isActive("/escalation-management") && "bg-primary/10 text-primary border-l-2 border-primary"
+                    "flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-md transition-colors",
+                    isActive("/escalation-management") && "bg-primary/10 text-primary font-medium border-l-2 border-primary"
                   )}
                 >
                   <AlertTriangle className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
@@ -150,8 +150,8 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
                 <Link 
                   href="/notification-templates"
                   className={cn(
-                    "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                    isActive("/notification-templates") && "bg-primary/10 text-primary border-l-2 border-primary"
+                    "flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-md transition-colors",
+                    isActive("/notification-templates") && "bg-primary/10 text-primary font-medium border-l-2 border-primary"
                   )}
                 >
                   <Mail className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
@@ -167,8 +167,8 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
             <Link 
               href="/settings"
               className={cn(
-                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                isActive("/settings") && "bg-primary/10 text-primary border-l-2 border-primary"
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-md transition-colors",
+                isActive("/settings") && "bg-primary/10 text-primary font-medium border-l-2 border-primary"
               )}
             >
               <Settings className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
@@ -178,8 +178,8 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
             <Link 
               href="/profile"
               className={cn(
-                "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-md transition-colors",
-                isActive("/profile") && "bg-primary/10 text-primary border-l-2 border-primary"
+                "flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-md transition-colors",
+                isActive("/profile") && "bg-primary/10 text-primary font-medium border-l-2 border-primary"
               )}
             >
               <User className={cn("mr-3", collapsed ? "mr-0 mx-auto" : "mr-3")} size={20} />
@@ -193,7 +193,7 @@ export function Sidebar({ className, isMobileOpen, onMobileClose }: SidebarProps
           <Button
             variant="ghost"
             className={cn(
-              "flex w-full items-center justify-center text-gray-700 hover:bg-gray-100",
+              "flex w-full items-center justify-center text-gray-700 hover:bg-blue-50",
               collapsed && "px-2"
             )}
             onClick={handleLogout}
